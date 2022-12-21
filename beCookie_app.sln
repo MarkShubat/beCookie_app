@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "beCookie_app", "beCookie_app\beCookie_app.csproj", "{5BA63CDB-704E-4284-805B-2BFDF1A4862E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BA63CDB-704E-4284-805B-2BFDF1A4862E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA63CDB-704E-4284-805B-2BFDF1A4862E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA63CDB-704E-4284-805B-2BFDF1A4862E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA63CDB-704E-4284-805B-2BFDF1A4862E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0259FABA-355A-4CF0-8D9A-E41C08427047}
+	EndGlobalSection
+EndGlobal
