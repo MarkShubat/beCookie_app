@@ -10,20 +10,19 @@ namespace beCookie_app.Controllers
     public class EventController : ControllerBase
     {       
         [HttpGet]
-        [Route("GetEventById")]
-        public IEnumerable<Event> Get(int id)
+        [Route("GetEvents")]
+        public IEnumerable<Event> GetEvents()
         {   
+            var context = new wypxrkenContext(); 
+            return context.Events;
+        }
+
+        [HttpGet]
+        [Route("GetEventById")]
+        public Event GetEventById(int id)
+        {
             var context = new wypxrkenContext();
-            if (id <= 0)
-            {    
-                foreach (var elem in context.Events)
-                    yield return elem;
-            }
-            else
-            {
-                foreach (var elem in context.Events.Where(Event => Event.Id == id))
-                    yield return elem ;
-            }
+            return context.Events.Where(item => item.Id == id).FirstOrDefault();
         }
 
         [HttpPost]

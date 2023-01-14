@@ -10,23 +10,21 @@ namespace beCookie_app.Controllers
     public class AvatarController : ControllerBase
     {       
         [HttpGet]
-        [Route("GetAvatarById")]
-        public IEnumerable<Avatar> GetMemberById(int id)
+        [Route("GetAvatars")]
+        public IEnumerable<Avatar> GetAvtars()
         {   
             var context = new wypxrkenContext();
             return context.Avatars;
         }
 
-        [HttpPost]
-        [Route("AddAvatar")]
-        public IActionResult GetEventMembers(int id)
+        [HttpGet]
+        [Route("GetAvatarById")]
+        public Avatar GetAvtarById(int id)
         {
             var context = new wypxrkenContext();
-            var user = context.Users.Where(x => x.Id == Data.currentUser.Id).FirstOrDefault();
-            user.AvatarId = id;
-            context.SaveChanges();
-            return Ok("Аватар добавлен");
+            return context.Avatars.Where(item => item.Id == id).FirstOrDefault();
         }
+
 
         [HttpDelete]
         [Route("DeleteAll")]

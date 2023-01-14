@@ -11,19 +11,18 @@ namespace beCookie_app.Controllers
     {       
         [HttpGet]
         [Route("GetFaqById")]
-        public IEnumerable<Faq> Get(int id)
+        public Faq GetFaqById(int id)
         {   
             var context = new wypxrkenContext();
-            if (id <= 0)
-            {    
-                foreach (var elem in context.Faqs)
-                    yield return elem;
-            }
-            else
-            {
-                foreach (var elem in context.Faqs.Where(Faq => Faq.Id == id))
-                    yield return elem;
-            }
+            return context.Faqs.Where(faq => faq.Id == id).FirstOrDefault();
+        }
+
+        [HttpGet]
+        [Route("GetFaqs")]
+        public IEnumerable<Faq> GetFaqs()
+        {
+            var context = new wypxrkenContext();
+            return context.Faqs;
         }
 
         [HttpGet]

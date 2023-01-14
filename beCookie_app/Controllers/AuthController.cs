@@ -29,8 +29,9 @@ namespace beCookie_app.Controllers
                     Name = name,
                     PhoneNumber = phoneNumber
                 };
-                GenerateAndSendVerifCode(email);
-                Data.userToEnter = user;
+                var context = new wypxrkenContext();
+                context.Users.Add(user);
+                context.SaveChangesAsync();
                 return Ok(user);
             }
         }
@@ -42,36 +43,19 @@ namespace beCookie_app.Controllers
             var context = new wypxrkenContext();
             if (context.Users.Where(user => user.Email == email).Count() == 0) return BadRequest("Нет пользователя с такой почтой");
             var user = context.Users.Where(user => user.Email == email).FirstOrDefault();
-            GenerateAndSendVerifCode(email);
-            Data.userToEnter = user;
             return Ok(user);
         }
 
         [HttpPost]
-        [Route("VerifyAfterRegister")]
-        public IActionResult VerifyAfterRegister(string code)
+        [Route("Verify")]
+        public IActionResult Verify(string code, string email)
         {
-            var user = Data.userToEnter;
-            if (code == Data.verifCode)
+            var item = Data.verifCode.Where(item => item.Item2 == email).LastOrDefault();
+            if (code == item.Item1)
             {
-                var context = new wypxrkenContext();
-                context.Users.Add(user);
-                context.SaveChanges();
-                return Ok(user);
+                return Ok("Успешный вход");
             }
-            else return BadRequest("Код неверный");         
-        }
-
-        [HttpPost]
-        [Route("VerifyAfterLogin")]
-        public IActionResult VerifyAfterLogin(string code)
-        {
-            var user = Data.userToEnter;
-            if (code == Data.verifCode)
-            {
-                return Ok(user);
-            }
-            else return BadRequest("Код неверный");
+            else return BadRequest("Неверный код или указана другая почта");
         }
         bool isEmailValid(string email)
         {
@@ -91,7 +75,9 @@ namespace beCookie_app.Controllers
             return isMatch.Success;
         }
 
-        void GenerateAndSendVerifCode(string email)
+        [HttpPost]
+        [Route("GenerateAndSendVerifCode")]
+        public void GenerateAndSendVerifCode(string email)
         {
             var sb = new StringBuilder();
             var rn = new Random();
@@ -100,7 +86,7 @@ namespace beCookie_app.Controllers
                 sb.Append(rn.Next(0, 9));
             }
             var code = sb.ToString();
-            Data.verifCode = code;
+            Data.verifCode.Add((code, email));
 
             MailAddress from = new MailAddress("marckshubat@yandex.ru", "admin");
             MailAddress to = new MailAddress("marckshubat@yandex.ru");

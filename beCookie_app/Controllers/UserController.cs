@@ -7,22 +7,21 @@ namespace beCookie_app.Controllers
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
-    {       
+    {
         [HttpGet]
         [Route("GetUserById")]
-        public IEnumerable<User> Get(int id)
-        {   
+        public User GetUserById(int id)
+        {
             var context = new wypxrkenContext();
-            if (id <= 0)
-            {    
-                foreach (var elem in context.Users)
-                    yield return elem;
-            }
-            else
-            {
-                foreach (var elem in context.Users.Where(user => user.Id == id))
-                    yield return elem;
-            }
+            return context.Users.Where(faq => faq.Id == id).FirstOrDefault();
+        }
+
+        [HttpGet]
+        [Route("GetUsers")]
+        public IEnumerable<User> GetFaqs()
+        {
+            var context = new wypxrkenContext();
+            return context.Users;
         }
 
         [HttpPost]

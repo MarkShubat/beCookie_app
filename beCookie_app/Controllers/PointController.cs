@@ -10,21 +10,21 @@ namespace beCookie_app.Controllers
     [Route("[controller]")]
     public class PointController : ControllerBase
     {       
+
         [HttpGet]
         [Route("GetPointById")]
-        public IEnumerable<Point> Get(int id)
-        {   
+        public Point GetPointById(int id)
+        {
             var context = new wypxrkenContext();
-            if (id <= 0)
-            {    
-                foreach (var elem in context.Points)
-                    yield return elem;
-            }
-            else
-            {
-                foreach (var elem in context.Points.Where(point => point.Id == id))
-                    yield return elem ;
-            }
+            return context.Points.Where(faq => faq.Id == id).FirstOrDefault();
+        }
+
+        [HttpGet]
+        [Route("GetPoints")]
+        public IEnumerable<Point> GetPoints()
+        {
+            var context = new wypxrkenContext();
+            return context.Points;
         }
 
         [HttpGet]
