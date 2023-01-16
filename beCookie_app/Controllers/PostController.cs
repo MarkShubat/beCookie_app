@@ -56,8 +56,11 @@ namespace beCookie_app.Controllers
 
         [HttpPost]
         [Route("AddPost")]
-        public IActionResult Add(string text, int userId)
+        public IActionResult Add(PostData data)
         {
+            var text = data.text;
+            var userId = data.userId;
+
             var context = new wypxrkenContext();
             var post = new Post()
             {
@@ -112,4 +115,10 @@ namespace beCookie_app.Controllers
             }
         }
     }
+    public class PostData
+    {
+        public string text { get; set; }
+        public int userId { get; set; }
+    }
+
 }

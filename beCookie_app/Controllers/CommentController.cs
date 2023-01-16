@@ -39,8 +39,12 @@ namespace beCookie_app.Controllers
 
         [HttpPost]
         [Route("AddComment")]
-        public IActionResult Add(string text, int postId, int userId)
+        public IActionResult Add(CommentData data)
         {
+            var text = data.text;
+            var postId = data.postId;
+            var userId = data.userId;
+
             var context = new wypxrkenContext();
             var comment = new Comment
             {
@@ -88,5 +92,11 @@ namespace beCookie_app.Controllers
                 Text = comment.Text;
             }
         }
+    }
+    public class CommentData
+    {
+        public string text { get; set; }
+        public int userId { get; set; }
+        public int postId { get; set; }
     }
 }

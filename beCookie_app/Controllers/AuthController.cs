@@ -9,6 +9,7 @@ using System.Diagnostics.Tracing;
 
 namespace beCookie_app.Controllers
 {
+
     [ApiController]
     [Route("[controller]")]
     public class AuthController : ControllerBase
@@ -16,8 +17,12 @@ namespace beCookie_app.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public IActionResult Register(string email, string name, string phoneNumber)
+        public IActionResult Register(ToRegistration userToReg)
         {
+            var name = userToReg.name;
+            var email = userToReg.email;
+            var phoneNumber = userToReg.phoneNumber; 
+
             if (name.Length >= 100) return BadRequest("Слишком длинный никнейм");
             else if (!isEmailValid(email)) return BadRequest("Неверный формат почты или пользователь с такой почтой уже зарегистрирован");
             else if (!isNumberValid(phoneNumber)) return BadRequest("Неверный формат номера телефона или пользователь с таким телефоном уже зарегистрирован");
@@ -81,7 +86,7 @@ namespace beCookie_app.Controllers
         {
             var sb = new StringBuilder();
             var rn = new Random();
-            for(var i = 0; i < 6; i++)
+            for (var i = 0; i < 6; i++)
             {
                 sb.Append(rn.Next(0, 9));
             }
@@ -89,7 +94,7 @@ namespace beCookie_app.Controllers
             Data.verifCode.Add((code, email));
 
             MailAddress from = new MailAddress("marckshubat@yandex.ru", "admin");
-            MailAddress to = new MailAddress("marckshubat@yandex.ru");
+            MailAddress to = new MailAddress(email);
             MailMessage m = new MailMessage(from, to);
             m.Subject = "Код подтверждения";
             var s = code;
@@ -101,5 +106,11 @@ namespace beCookie_app.Controllers
             smtp.Send(m);
         }
     }
-        
+    public class ToRegistration
+    {
+        public string email { get; set; }
+        public string name { get; set; }
+        public string phoneNumber { get; set; }
+    }
 }
+
