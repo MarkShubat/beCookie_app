@@ -24,6 +24,19 @@ namespace beCookie_app.Controllers
         }
 
         [HttpGet]
+        [Route("GetUserPosts")]
+        public PostInfo GetUserPosts(int userId, int currentUserId)
+        {
+            var context = new wypxrkenContext();
+            var context1 = new wypxrkenContext();
+            var users = context.Users;
+            var posts = context1.Posts;
+            var elem = posts.Where(post => post.UserId == userId).FirstOrDefault();
+            var user = users.Where(user => user.Id == elem.UserId).FirstOrDefault();
+            return new PostInfo(elem, user, currentUserId);
+        }
+
+        [HttpGet]
         [Route("GetPosts")]
         public IEnumerable<PostInfo> GetPosts(int currentUserId)
         {
