@@ -12,7 +12,7 @@ namespace beCookie_app.Controllers
     {       
         [HttpGet]
         [Route("GetPostById")]
-        public IEnumerable<PostInfo> GetPostById(int id, int currentUserId)
+        public PostInfo GetPostById(int id, int currentUserId)
         {   
             var context = new wypxrkenContext();
             var context1 = new wypxrkenContext();
@@ -20,7 +20,7 @@ namespace beCookie_app.Controllers
             var posts = context1.Posts;
             var elem = posts.Where(post => post.Id == id).FirstOrDefault();
             var user = users.Where(user => user.Id == elem.UserId).FirstOrDefault();
-            yield return new PostInfo(elem, user, currentUserId);
+            return new PostInfo(elem, user, currentUserId);
         }
 
         [HttpGet]
