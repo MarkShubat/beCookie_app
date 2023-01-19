@@ -31,11 +31,14 @@ namespace beCookie_app.Controllers
             var context1 = new wypxrkenContext();
             var users = context.Users;
             var posts = context1.Posts;
+            var list = new List<PostInfo>();
             foreach (var elem in posts)
             {
                 var user = users.Where(user => user.Id == elem.UserId).FirstOrDefault();
-                yield return new PostInfo(elem, user, currentUserId);
+               list.Add(new PostInfo(elem, user, currentUserId));
             }
+            var result = list.OrderByDescending(n => n.likesCount);
+            return result;
         }
 
         [HttpGet]
