@@ -35,12 +35,14 @@ namespace beCookie_app.Controllers
 
         [HttpPost]
         [Route("AddFaq")]
-        public IActionResult Add(string text, string tytle, int type )
+        public IActionResult Add(string text, string tytle, int type, string image_url)
         {
             var context = new wypxrkenContext();
             var faq = new Faq
             {
                 Type = type,
+                Tytle = tytle,
+                Image_url = image_url,
                 Text = text
             };
             context.Faqs.Add(faq);

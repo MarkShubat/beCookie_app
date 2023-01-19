@@ -9,5 +9,6 @@ namespace beCookie_app.Models
         public int? Type { get; set; }
         public string? Text { get; set; }
         public string? Tytle { get; set; }
+        public string? Image_url { get; set; }
     }
 }

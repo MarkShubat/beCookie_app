@@ -95,6 +95,7 @@ namespace beCookie_app.Controllers
         public string? Date { get; set; }
         public string? Text { get; set; }
         public int likesCount { get; set; }
+        public int commentsCount { get; set; }
         public bool IsUserLiked { get; set; }
 
         public PostInfo(Post post, User user, int currentUserId)
@@ -109,6 +110,7 @@ namespace beCookie_app.Controllers
             var context = new wypxrkenContext();
             likesCount = context.Likes.Where(like => like.PostId == post.Id && like.UserLiked == 1).Count();
             var like = context.Likes.Where(like => like.PostId == post.Id && like.UserId == currentUserId).FirstOrDefault();
+            commentsCount = context.Comments.Where(comment => comment.PostId == post.Id).Count();
             if(like != null)
             {
                 IsUserLiked = like.UserLiked == 1;
