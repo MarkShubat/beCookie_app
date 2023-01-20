@@ -52,9 +52,10 @@ namespace beCookie_app.Controllers
                 PostId = postId,
                 UserId = userId,
             };
-            context.Comments.Add(comment);           
+            context.Comments.Add(comment);
+            var user = context.Users.Where(user => user.Id == userId).FirstOrDefault();
             context.SaveChangesAsync();
-            return Ok(comment);
+            return Ok(new CommentInfo(comment, user));
         }
 
         [HttpDelete]
