@@ -142,7 +142,7 @@ namespace beCookie_app.DbContexts
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Text)
-                    .HasMaxLength(1000)
+                    .HasMaxLength(1500)
                     .HasColumnName("text");
 
                 entity.Property(e => e.Image_url)
