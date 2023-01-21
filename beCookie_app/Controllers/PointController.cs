@@ -39,7 +39,7 @@ namespace beCookie_app.Controllers
 
         [HttpPost]
         [Route("AddPoint")]
-        public IActionResult Add(string title, string desc, string schedule, string type, string adress, string phone, string date)
+        public IActionResult Add(string title, string desc, string schedule, string type, string adress, string phone, string date, double latitude, double longitude)
         {
             var context = new wypxrkenContext();
             var point = new Point
@@ -47,9 +47,10 @@ namespace beCookie_app.Controllers
                 Title = title,
                 Description = desc,
                 Schedule = schedule,
-                Types = type,   
+                Types = type,
                 Adress = adress,
-                PhoneNumber = phone,   
+                PhoneNumber = phone,
+                Location = new NpgsqlTypes.NpgsqlPoint(latitude, longitude),
                 Date = date
             };
             context.Points.Add(point);           
