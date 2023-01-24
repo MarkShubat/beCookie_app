@@ -101,7 +101,7 @@ namespace beCookie_app.Controllers
             m.Body = s;
             m.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient("smtp.yandex.ru", 587);
-            smtp.Credentials = new NetworkCredential("markshubat240202@yandex.ru", "Mark022402");
+            smtp.Credentials = new NetworkCredential("markshubat240202@yandex.ru", "Mark20022402");
             smtp.EnableSsl = true;
             smtp.Send(m);
         }

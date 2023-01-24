@@ -58,8 +58,11 @@ namespace beCookie_app.Controllers
         public IActionResult DeleteById(int id)
         {
             var context = new wypxrkenContext();
-            var user = context.Users.Where(user => user.Id == id).FirstOrDefault();
-            context.Users.Remove(user);
+            foreach (var elem in context.Users)
+            {
+                if(elem.Id == id)
+                    context.Users.Remove(elem);
+            }
             context.SaveChangesAsync();
             return Ok("записи удалены");
         }
