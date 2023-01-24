@@ -52,5 +52,16 @@ namespace beCookie_app.Controllers
             context.SaveChangesAsync();
             return Ok("записи удалены");
         }
+
+        [HttpDelete]
+        [Route("DeleteById")]
+        public IActionResult DeleteById(int id)
+        {
+            var context = new wypxrkenContext();
+            var user = context.Users.Where(user => user.Id == id).FirstOrDefault();
+            context.Users.Remove(user);
+            context.SaveChangesAsync();
+            return Ok("записи удалены");
+        }
     }
 }

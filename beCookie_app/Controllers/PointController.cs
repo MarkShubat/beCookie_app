@@ -29,12 +29,22 @@ namespace beCookie_app.Controllers
 
         [HttpGet]
         [Route("GetPointByType")]
-        public IEnumerable<Point> GetByType(int type)
+        public IEnumerable<Point> GetByType(string type)
         {
             var context = new wypxrkenContext();
-            if(context.Points.Count() != 0)
-                return context.Points.Where(point => point.Types.Split().Contains(type.ToString()));
-            return context.Points;
+            type = type.Replace(" ", "");
+            var typePart = type.Split(",");
+            if (context.Points.Count() != 0)
+            {           
+                foreach(var elem in context.Points)
+                {
+                    var types = elem.Types.Replace(" ", "").Split(",");
+                    foreach(var elem1 in typePart)
+                    {
+                        if (types.Contains(elem1)) yield return elem;
+                    }
+                }
+            }
         }
 
         [HttpPost]
@@ -67,6 +77,17 @@ namespace beCookie_app.Controllers
             {
                 context.Points.Remove(elem);
             }
+            context.SaveChangesAsync();
+            return Ok("записи удалены");
+        }
+
+        [HttpDelete]
+        [Route("DeleteById")]
+        public IActionResult DeleteById(int id)
+        {
+            var context = new wypxrkenContext();
+            var point = context.Points.Where(point => point.Id == id).FirstOrDefault();
+            context.Points.Remove(point);
             context.SaveChangesAsync();
             return Ok("записи удалены");
         }
