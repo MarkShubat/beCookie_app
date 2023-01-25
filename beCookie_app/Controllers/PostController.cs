@@ -1,5 +1,6 @@
 using beCookie_app.DbContexts;
 using beCookie_app.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json;
@@ -41,6 +42,7 @@ namespace beCookie_app.Controllers
             return result;
         }
 
+        [EnableCors("CorsPolicy")]
         [HttpGet]
         [Route("GetPosts")]
         public IEnumerable<PostInfo> GetPosts(int currentUserId)
