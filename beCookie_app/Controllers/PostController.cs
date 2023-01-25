@@ -47,6 +47,10 @@ namespace beCookie_app.Controllers
         [Route("GetPosts")]
         public IEnumerable<PostInfo> GetPosts(int currentUserId)
         {
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Methods", "*");
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "*");
             var context = new wypxrkenContext();
             var context1 = new wypxrkenContext();
             var users = context.Users;
