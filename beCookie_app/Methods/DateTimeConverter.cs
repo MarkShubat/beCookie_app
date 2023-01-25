@@ -2,7 +2,11 @@
 {
     public class DateTimeConverter
     {
-        public static string GetDateTimeString() => DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        public static string GetDateTimeString() {
+            var time = DateTime.Now;
+            time.AddHours(5);
+            return time.ToString("dd/MM/yyyy HH:mm:ss"); 
+        }
 
         public static DateTime GetDateTimeFromStr(string datetime)
         {

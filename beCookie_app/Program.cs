@@ -19,7 +19,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(options =>
-             options.WithOrigins("http://localhost:3000")
+             options.WithOrigins("http://u143124.test-handyhost.ru")
             .AllowAnyHeader()
             .AllowAnyMethod()
             );
