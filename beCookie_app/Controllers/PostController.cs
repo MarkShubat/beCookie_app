@@ -42,7 +42,7 @@ namespace beCookie_app.Controllers
             return result;
         }
 
-        [EnableCors("CorsPolicy")]
+        [DisableCors]
         [HttpGet]
         [Route("GetPosts")]
         public IEnumerable<PostInfo> GetPosts(int currentUserId)
