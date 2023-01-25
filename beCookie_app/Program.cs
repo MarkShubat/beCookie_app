@@ -7,7 +7,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-
+builder.Services.AddCors();
 
 
 var app = builder.Build();
@@ -19,7 +19,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseCors(options =>
+            options.WithOrigins("http://u143124.test-handyhost.ru")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            );
 
 app.UseHttpsRedirection();
 
