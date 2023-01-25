@@ -18,8 +18,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(options =>
-             options.WithOrigins("http://u143124.test-handyhost.ru")
+app.UseCors(builder => builder
+            .AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod()
             );
