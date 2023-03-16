@@ -29,8 +29,9 @@ namespace beCookie_app.Controllers
 
         [HttpGet]
         [Route("GetPointByType")]
-        public IEnumerable<Point> GetByType(string type)
+        public IEnumerable<Point> GetByType(PointType pointType)
         {
+            var type = pointType.type;
             var context = new wypxrkenContext();
             type = type.Replace(" ", "");
             var typePart = type.Split(",");
@@ -91,5 +92,9 @@ namespace beCookie_app.Controllers
             context.SaveChangesAsync();
             return Ok("записи удалены");
         }
+    }
+    public class PointType
+    {
+        public string type { get; set; }
     }
 }
