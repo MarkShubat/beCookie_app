@@ -27,7 +27,7 @@ namespace beCookie_app.Controllers
             return context.Points;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetPointByType")]
         public IEnumerable<Point> GetByType(PointType pointType)
         {
