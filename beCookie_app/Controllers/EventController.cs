@@ -24,23 +24,35 @@ namespace beCookie_app.Controllers
 
         [HttpGet]
         [Route("GetEvents")]
-        public IEnumerable<Event> GetEvents()
-        {   
-            var context = new wypxrkenContext(); 
-            return context.Events;
+        public IEnumerable<EventInfo> GetEvents(int currentUserId)
+        {
+            var context = new wypxrkenContext();
+            var context1 = new wypxrkenContext();
+            foreach(var elem in context.Events)
+            {
+                var members = context1.Members.Where(m => m.EventId == elem.Id);
+                var IsUserMember = members.Where(m => m.UserId == currentUserId).Any();
+                var status = IsUserMember ? currentUserId == elem.AdminId ? "Owner" : "Member" : "NotMember";
+                yield return new EventInfo(elem, members.Count(), status);
+            }
         }
 
         [HttpGet]
         [Route("GetEventById")]
-        public Event GetEventById(int id)
+        public EventInfo GetEventById(int id, int currentUserId)
         {
             var context = new wypxrkenContext();
-            return context.Events.Where(item => item.Id == id).FirstOrDefault();
+            var context1 = new wypxrkenContext();
+            var elem = context.Events.Where(e => e.Id == id).FirstOrDefault();
+            var members = context1.Members.Where(m => m.EventId == elem.Id);
+            var IsUserMember = members.Where(m => m.UserId == currentUserId).Any();
+            var status = IsUserMember ? currentUserId == elem.AdminId ? "Owner" : "Member" : "NotMember";
+            return new EventInfo(elem, members.Count(), status);
         }
 
         [HttpPost]
         [Route("AddEvent")]
-        public IActionResult Add(string title, string desc, string schedule, string adress, string date, int adminId)
+        public IActionResult Add(string title, string desc, string schedule, string adress, int adminId)
         {
             var context = new wypxrkenContext();
             var event1 = new Event
@@ -50,7 +62,7 @@ namespace beCookie_app.Controllers
                 Schedule = schedule,
                 AdminId = adminId,
                 Adress = adress,
-                Date = date
+                Date = DateTimeConverter.GetDateTimeString()
             };
             context.Events.Add(event1);
             context.SaveChangesAsync();
@@ -93,25 +105,7 @@ namespace beCookie_app.Controllers
             return Ok("сообщение отправлено");
         }
 
-        [HttpGet]
-        [Route("GetMessages")]
-        public IEnumerable<MessageInfo> Index()
-        {
-            client = new FireSharp.FirebaseClient(config);
-            FirebaseResponse response = client.Get("Messages");
-            dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
-            var list = new List<Message>();
-            if (data != null)
-            {
-                foreach (var item in data)
-                {
-                    var message = JsonConvert.DeserializeObject<Message>(((JProperty)item).Value.ToString());
-                    var context = new wypxrkenContext();
-                    var user = context.Users.Where(user => user.Id == Convert.ToInt32(message.UserId)).FirstOrDefault();
-                    yield return new MessageInfo(user, message.Text, message.Date);
-                }
-            }
-        }
+        
 
         [HttpDelete]
         [Route("DeleteAll")]
@@ -127,20 +121,25 @@ namespace beCookie_app.Controllers
         }
     }
 
-    public class MessageInfo
-    {       
-        public int? UserId { get; set; }
-        public string? UserName { get; set; }
-        public string? UserAvatar { get; set; }
-        public string? Text { get; set; }
-        public string? Date { get; set; }
+    public class EventInfo: Event
+    {
+       public int MembersCount { get; set; }
+       public string UserStatus { get; set; }
 
-        public MessageInfo(User user, string? text, string? date)
+        public EventInfo (Event e, int membersCount, string status)
         {
-            UserId = user.Id;
-            UserName = user.Name;
-            Text = text;
-            Date = date;
+            Id = e.Id;
+            AdminId = e.AdminId;
+            MembersCount = membersCount;
+            UserStatus = status;
+            Title = e.Title;
+            Type = e.Type;
+            Description = e.Description;
+            Schedule = e.Schedule;
+            Date = e.Date;
+            Adress = e.Adress;
+            Location = e.Location;
+
         }
     }
 }

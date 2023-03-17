@@ -129,6 +129,10 @@ namespace beCookie_app.DbContexts
                     .HasMaxLength(50)
                     .HasColumnName("title");
 
+                entity.Property(e => e.Type)
+                    .HasMaxLength(25)
+                    .HasColumnName("type");
+
                 entity.HasOne(d => d.Admin)
                     .WithMany(p => p.Events)
                     .HasForeignKey(d => d.AdminId)
