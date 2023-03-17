@@ -129,9 +129,7 @@ namespace beCookie_app.Controllers
     {
        public int MembersCount { get; set; }
        public string UserStatus { get; set; }
-       public string AdminName { get; set; }
-       public string AdminEmail { get; set; }
-       public string AdminPhoneNumber { get; set; }
+
 
         public EventInfo (Event e, int membersCount, string status, User admin)
         {
@@ -146,9 +144,7 @@ namespace beCookie_app.Controllers
             Date = e.Date;
             Adress = e.Adress;
             Location = e.Location;
-            AdminName = admin.Name;
-            AdminEmail = admin.Email;
-            AdminPhoneNumber = admin.PhoneNumber;
+            Admin = admin;
         }
     }
 }
