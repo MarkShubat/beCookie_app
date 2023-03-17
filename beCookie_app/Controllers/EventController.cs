@@ -28,12 +28,14 @@ namespace beCookie_app.Controllers
         {
             var context = new wypxrkenContext();
             var context1 = new wypxrkenContext();
+            var context2 = new wypxrkenContext();
             foreach(var elem in context.Events)
             {
                 var members = context1.Members.Where(m => m.EventId == elem.Id);
                 var IsUserMember = members.Where(m => m.UserId == currentUserId).Any();
                 var status = IsUserMember ? currentUserId == elem.AdminId ? "Owner" : "Member" : "NotMember";
-                yield return new EventInfo(elem, members.Count(), status);
+                var admin = context2.Users.Where(user => user.Id == elem.AdminId).FirstOrDefault();
+                yield return new EventInfo(elem, members.Count(), status, admin);
             }
         }
 
@@ -43,11 +45,13 @@ namespace beCookie_app.Controllers
         {
             var context = new wypxrkenContext();
             var context1 = new wypxrkenContext();
+            var context2 = new wypxrkenContext();
             var elem = context.Events.Where(e => e.Id == id).FirstOrDefault();
             var members = context1.Members.Where(m => m.EventId == elem.Id);
             var IsUserMember = members.Where(m => m.UserId == currentUserId).Any();
             var status = IsUserMember ? currentUserId == elem.AdminId ? "Owner" : "Member" : "NotMember";
-            return new EventInfo(elem, members.Count(), status);
+            var admin = context2.Users.Where(user => user.Id == elem.AdminId).FirstOrDefault();
+            return new EventInfo(elem, members.Count(), status,admin);
         }
 
         [HttpPost]
@@ -125,8 +129,11 @@ namespace beCookie_app.Controllers
     {
        public int MembersCount { get; set; }
        public string UserStatus { get; set; }
+       public string AdminName { get; set; }
+       public string AdminEmail { get; set; }
+       public string AdminPhoneNumber { get; set; }
 
-        public EventInfo (Event e, int membersCount, string status)
+        public EventInfo (Event e, int membersCount, string status, User admin)
         {
             Id = e.Id;
             AdminId = e.AdminId;
@@ -139,7 +146,9 @@ namespace beCookie_app.Controllers
             Date = e.Date;
             Adress = e.Adress;
             Location = e.Location;
-
+            AdminName = admin.Name;
+            AdminEmail = admin.Email;
+            AdminPhoneNumber = admin.PhoneNumber;
         }
     }
 }
