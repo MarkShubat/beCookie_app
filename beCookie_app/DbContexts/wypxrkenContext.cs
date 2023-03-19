@@ -185,9 +185,9 @@ namespace beCookie_app.DbContexts
 
             modelBuilder.Entity<Member>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("members");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.EventId).HasColumnName("event_id");
 

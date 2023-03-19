@@ -1,4 +1,5 @@
 using beCookie_app.DbContexts;
+using beCookie_app.Methods;
 using beCookie_app.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,10 @@ namespace beCookie_app.Controllers
                 if (info.IsUserLiked) yield return info;
             }
         }
+
+        [HttpGet]
+        [Route("GetDateTime")]
+        public string GetDateTime() => DateTimeConverter.GetDateTimeString();
 
         [HttpPost]
         [Route("AddPost")]

@@ -23,6 +23,22 @@ namespace beCookie_app.Controllers
                 yield return new MemberInfo(elem, user);
             }
         }
+
+        [HttpPost]
+        [Route("AssignToEvent")]
+        public IActionResult AssignToEvent(int userId, int eventId)
+        {
+            var context = new wypxrkenContext();
+            var member = new Member
+            {
+                UserId = userId,
+                EventId = eventId
+            };
+            context.Members.Add(member);
+            context.SaveChangesAsync();
+            return Ok("участник добавлен");
+            
+        }
     }
     public class MemberInfo : Member
     {

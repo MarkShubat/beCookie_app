@@ -5,7 +5,7 @@
         public static string GetDateTimeString() {
             var time = DateTime.Now;
             time.AddHours(5);
-            return time.ToString("dd/MM/yyyy HH:mm:ss"); 
+            return time.ToString("dd/MM/yyyy HH:mm"); 
         }
 
         public static DateTime GetDateTimeFromStr(string datetime)

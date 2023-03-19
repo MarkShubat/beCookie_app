@@ -69,7 +69,11 @@ namespace beCookie_app.Controllers
                 Date = DateTimeConverter.GetDateTimeString()
             };
             context.Events.Add(event1);
-            context.SaveChangesAsync();
+            context.SaveChanges();
+            var context1 = new wypxrkenContext();
+            var eventId = context1.Events.Where(e => e.AdminId == event1.AdminId && event1.Title == e.Title).FirstOrDefault().Id;
+            context1.Members.Add(new Member { EventId = eventId, UserId = adminId });
+            context1.SaveChanges();
             return Ok("Событие добавлено");
         }
 
@@ -80,16 +84,19 @@ namespace beCookie_app.Controllers
             try
             {
                 client = new FireSharp.FirebaseClient(config);
+                var context = new wypxrkenContext();
                 var data = new Message
                 {
-                    UserId = userId,
-                    Text = Text,
-                    EventId = eventId,
-                    Date = DateTimeConverter.GetDateTimeString()
+                    userId = userId,
+                    text = Text,
+                    eventId = eventId,
+                    date = DateTimeConverter.GetDateTimeString(),
+                    userName = context.Users.Where(u => u.Id == Convert.ToInt32(userId)).FirstOrDefault().Name,
+                    edited = false
                 };
                 PushResponse response = client.Push("Messages/", data);
-                data.Id = response.Result.name;
-                SetResponse setResponse = client.Set("Messages/" + data.Id, data);
+                data.id = response.Result.name;
+                SetResponse setResponse = client.Set("Messages/" + data.id, data);
 
                 if (setResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -109,7 +116,19 @@ namespace beCookie_app.Controllers
             return Ok("сообщение отправлено");
         }
 
-        
+        [HttpPost]
+        [Route("EditMessage")]
+        public IActionResult EditMessage(string id, string text)
+        {
+            client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response = client.Get("Messages/" + id);
+            var data = JsonConvert.DeserializeObject<Message>(response.Body);
+            data.text = text;
+            data.edited = true;
+            SetResponse response1 = client.Set("Messages/" + id, data);
+            return Ok("сообщение изменено");
+
+        }
 
         [HttpDelete]
         [Route("DeleteAll")]
