@@ -56,23 +56,25 @@ namespace beCookie_app.Controllers
 
         [HttpPost]
         [Route("AddEvent")]
-        public IActionResult Add(string title, string desc, string schedule, string adress, int adminId)
+        public IActionResult Add(Event e)
         {
             var context = new wypxrkenContext();
             var event1 = new Event
             {
-                Title = title,
-                Description = desc,
-                Schedule = schedule,
-                AdminId = adminId,
-                Adress = adress,
-                Date = DateTimeConverter.GetDateTimeString()
+                Title = e.Title,
+                Description = e.Description,
+                Schedule = e.Schedule,
+                AdminId = e.AdminId,
+                Adress = e.Adress,
+                Date = DateTimeConverter.GetDateTimeString(),
+                Location = e.Location,
+                Type = e.Type
             };
             context.Events.Add(event1);
             context.SaveChanges();
             var context1 = new wypxrkenContext();
             var eventId = context1.Events.Where(e => e.AdminId == event1.AdminId && event1.Title == e.Title).FirstOrDefault().Id;
-            context1.Members.Add(new Member { EventId = eventId, UserId = adminId });
+            context1.Members.Add(new Member { EventId = eventId, UserId = e.AdminId });
             context1.SaveChanges();
             return Ok("Событие добавлено");
         }
@@ -165,5 +167,11 @@ namespace beCookie_app.Controllers
             Location = e.Location;
             Admin = admin;
         }
+    }
+
+    public class EventData : Event
+    {
+        public int MembersCount { get; set; }
+        public string UserStatus { get; set; }
     }
 }
