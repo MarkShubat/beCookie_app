@@ -186,6 +186,31 @@ namespace beCookie_app.Controllers
             var result = JsonConvert.DeserializeObject<Rootobject>(responseBody).response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.text;
             return result;
         }
+
+        [HttpGet]
+        [Route("GetAdressLoc")]
+        public Loc GetAdressLoc(string adress)
+        {
+            (string, string) street_house = new (adress.Split()[0], adress.Split()[1]);
+            var sb = new StringBuilder("https://geocode-maps.yandex.ru/1.x/?apikey=a9ee6d10-90f7-4df7-b755-8d2b210a9aa1&format=json&geocode=Екатеринбург+");
+            sb.Append(street_house.Item1);
+            sb.Append("+");
+            sb.Append(street_house.Item2);
+            return GetPointLocation(sb.ToString()).Result;
+        }
+
+        public static async Task<Loc> GetPointLocation(string request)
+        {
+            var client = new HttpClient();
+            var response = await client.GetAsync(request);
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var loc = new Loc();     
+            var result = JsonConvert.DeserializeObject<Rootobject>(responseBody).response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
+            loc.x = result.Split()[0];
+            loc.y = result.Split()[1];
+            return loc;
+        }
     }
 
     public class EventInfo: Event
@@ -209,5 +234,10 @@ namespace beCookie_app.Controllers
             Location = e.Location;
             Admin = admin;
         }
+    }
+    public class Loc
+    {
+        public string x { get; set; }
+        public string y { get; set; }
     }
 }
