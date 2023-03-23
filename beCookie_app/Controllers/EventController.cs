@@ -167,13 +167,14 @@ namespace beCookie_app.Controllers
 
         [HttpGet]
         [Route("GetPointInfo")]
-        public string GetPointInfo(string x, string y)
+        public Adress GetPointInfo(string x, string y)
         {
             var sb = new StringBuilder("https://geocode-maps.yandex.ru/1.x/?apikey=a9ee6d10-90f7-4df7-b755-8d2b210a9aa1&format=json&geocode=");
             sb.Append(x);
             sb.Append(",");
             sb.Append(y);
-            return GetPointName(sb.ToString()).Result;
+            var result = GetPointName(sb.ToString()).Result;
+            return new Adress {adress = result};
 
         }
 
@@ -239,5 +240,10 @@ namespace beCookie_app.Controllers
     {
         public string x { get; set; }
         public string y { get; set; }
+    }
+
+    public class Adress
+    {
+        public string adress { get; set; }
     }
 }
