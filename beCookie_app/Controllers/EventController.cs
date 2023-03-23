@@ -8,6 +8,8 @@ using FireSharp.Response;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using beCookie_app.Methods;
+using System.Text;
+using System.Net.NetworkInformation;
 
 namespace beCookie_app.Controllers
 {
@@ -36,6 +38,24 @@ namespace beCookie_app.Controllers
                 var status = IsUserMember ? currentUserId == elem.AdminId ? "Owner" : "Member" : "NotMember";
                 var admin = context2.Users.Where(user => user.Id == elem.AdminId).FirstOrDefault();
                 yield return new EventInfo(elem, members.Count(), status, admin);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetEventsWhereUserIsMember")]
+        public IEnumerable<EventInfo> GetEventsWhereUserIsMember(int currentUserId)
+        {
+            var context = new wypxrkenContext();
+            var context1 = new wypxrkenContext();
+            var context2 = new wypxrkenContext();
+            foreach (var elem in context.Events)
+            {
+                var members = context1.Members.Where(m => m.EventId == elem.Id);
+                var IsUserMember = members.Where(m => m.UserId == currentUserId).Any();
+                var status = IsUserMember ? currentUserId == elem.AdminId ? "Owner" : "Member" : "NotMember";
+                var admin = context2.Users.Where(user => user.Id == elem.AdminId).FirstOrDefault();
+                if(status != "NotMember")
+                    yield return new EventInfo(elem, members.Count(), status, admin);
             }
         }
 
@@ -144,6 +164,28 @@ namespace beCookie_app.Controllers
             context.SaveChangesAsync();
             return Ok("записи удалены");
         }
+
+        [HttpGet]
+        [Route("GetPointInfo")]
+        public string GetPointInfo(string x, string y)
+        {
+            var sb = new StringBuilder("https://geocode-maps.yandex.ru/1.x/?apikey=a9ee6d10-90f7-4df7-b755-8d2b210a9aa1&format=json&geocode=");
+            sb.Append(x);
+            sb.Append(",");
+            sb.Append(y);
+            return GetPointName(sb.ToString()).Result;
+
+        }
+
+        public static async Task<string> GetPointName(string request)
+        {
+            var client = new HttpClient();
+            var response = await client.GetAsync(request);
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Rootobject>(responseBody).response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.text;
+            return result;
+        }
     }
 
     public class EventInfo: Event
@@ -167,11 +209,5 @@ namespace beCookie_app.Controllers
             Location = e.Location;
             Admin = admin;
         }
-    }
-
-    public class EventData : Event
-    {
-        public int MembersCount { get; set; }
-        public string UserStatus { get; set; }
     }
 }
