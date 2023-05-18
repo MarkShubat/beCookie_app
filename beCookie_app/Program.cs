@@ -8,7 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddCors();
-
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -28,6 +28,7 @@ app.UseCors(options =>
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.MapRazorPages();
 
 app.MapControllers();
 

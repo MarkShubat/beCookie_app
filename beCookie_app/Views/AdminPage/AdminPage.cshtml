@@ -1,0 +1,122 @@
+﻿<script>
+    function addFaq() {
+        let faqType = document.querySelector('.FaqType').value;
+        let faqTitle = document.querySelector('.FaqTitle').value;
+        let faqText = document.querySelector('.FaqText').value;
+        let img = document.querySelector('.ImageUrl').value;
+        var req = `http://localhost:7290/Faq/AddFaq?text=${faqText}&tytle=${faqTitle}&type=${faqType}&image_url=${img}`;
+        fetch(req, {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+            })
+            .then(function (response) {
+                if (response.ok) {
+                    alert("Good: " + "New FAQ successfully added");
+                } else {
+                    alert("Bad: " + "Oops, something went wrong");
+                }
+            })
+            .catch(function (error) {
+                alert("Error: " + error);
+            });
+    }   
+</script>
+
+<script>
+    function addPoint() {
+        let pointType = document.querySelector('.PointType').value;
+        let pointTitle = document.querySelector('.PointTitle').value;
+        let pointText = document.querySelector('.PointText').value;
+        let date = document.querySelector('.Date').value;
+        let schedule = document.querySelector('.Schedule').value;
+        let phone = document.querySelector('.Phone').value;
+        let adres = document.querySelector('.Adress').value;
+        let latitude = document.querySelector('.Latitude').value;
+        let longitude = document.querySelector('.Longitude').value;
+        var req = `http://localhost:7290/Point/AddPoint?title=${pointTitle}&desc=${pointText}&schedule=${schedule}&type=${pointType}&adress=${adres}&phone=${phone}&date=${date}&latitude=${latitude}&longitude=${longitude}`;
+        fetch(req, {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    alert("Good: " + "New Point was successfully added");
+                } else {
+                    alert("Bad: " + "Oops, something went wrong");
+                }
+            })
+            .catch(function (error) {
+                alert("Error: " + error);
+            });
+    }
+</script>
+<h1>Welcome to AdminPage!</h1>
+
+<h2>Add new Faq to App:</h2>
+<p>
+    <b>Enter Type:</b><br>
+    <input class="FaqType" type="text" size="40">
+</p>
+<p>
+    <b>Enter Title:</b><br>
+    <input class="FaqTitle" type="text" size="40">
+</p>
+<p>
+    Text:<Br>
+    <textarea class="FaqText" cols="40" rows="3"></textarea>
+</p>
+<p>
+    ImageUrl:<Br>
+    <textarea class="ImageUrl" cols="40" rows="3"></textarea>
+</p>
+<input type="button" value="Add Faq" onclick="addFaq()">
+
+
+
+<h2>Add new Point to App:</h2>
+<p>
+    <b>Enter Type:</b><br>
+    <input class="PointType" type="text" size="40">
+</p>
+<p>
+    <b>Enter Title:</b><br>
+    <input class="PointTitle" type="text" size="40">
+</p>
+<p>
+    Description:<Br>
+    <textarea class="PointText" cols="40" rows="3"></textarea>
+</p>
+<p>
+    Adress:<Br>
+    <textarea class="Adress" cols="40" rows="3"></textarea>
+</p>
+<p>
+    Date:<Br>
+    <textarea class="Date" cols="40" rows="3"></textarea>
+</p>
+<p>
+    Schedule:<Br>
+    <textarea class="Schedule" cols="40" rows="3"></textarea>
+</p>
+<p>
+    Phone:<Br>
+    <textarea class="Phone" cols="40" rows="3"></textarea>
+</p>
+<p>
+    Latitude:<Br>
+    <textarea class="Latitude" cols="40" rows="3"></textarea>
+</p>
+<p>
+    Longitude:<Br>
+    <textarea class="Longitude" cols="40" rows="3"></textarea>
+</p>
+<input type="button" value="Add Point" onclick="addPoint()">
+
+
+<p>Page functions will be updated soon!</p>

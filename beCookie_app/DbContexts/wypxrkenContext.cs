@@ -260,6 +260,8 @@ namespace beCookie_app.DbContexts
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.AvatarId).HasColumnName("avatar_id");
+                entity.Property(e => e.Points).HasColumnName("points");
+                entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(100)

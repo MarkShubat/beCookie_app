@@ -18,6 +18,8 @@ namespace beCookie_app.Models
         public int? AvatarId { get; set; }
         public string? Name { get; set; }
         public string? PhoneNumber { get; set; }
+        public int? Points { get; set; }
+        public int? Status { get; set; }
 
         public virtual Avatar? Avatar { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

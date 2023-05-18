@@ -165,6 +165,17 @@ namespace beCookie_app.Controllers
             return Ok("записи удалены");
         }
 
+        [HttpDelete]
+        [Route("DeleteById")]
+        public IActionResult DeleteById(int id)
+        {
+            var context = new wypxrkenContext();
+            var elem = context.Events.Where(e => e.Id == id).FirstOrDefault();
+            context.Events.Remove(elem);
+            context.SaveChangesAsync();
+            return Ok("записи удалены");
+        }
+
         [HttpGet]
         [Route("GetPointInfo")]
         public Adress GetPointInfo(string x, string y)

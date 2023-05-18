@@ -93,7 +93,7 @@ namespace beCookie_app.Controllers
             var code = sb.ToString();
             Data.verifCode.Add((code, email));
 
-            MailAddress from = new MailAddress("markshubat240202@yandex.ru", "admin");
+            MailAddress from = new MailAddress("marckshubat@yandex.ru", "admin");
             MailAddress to = new MailAddress(email);
             MailMessage m = new MailMessage(from, to);
             m.Subject = "Код подтверждения";
@@ -101,7 +101,7 @@ namespace beCookie_app.Controllers
             m.Body = s;
             m.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient("smtp.yandex.ru", 587);
-            smtp.Credentials = new NetworkCredential("markshubat240202@yandex.ru", "Mark20022402");
+            smtp.Credentials = new NetworkCredential("marckshubat@yandex.ru", "Mark022402");
             smtp.EnableSsl = true;
             smtp.Send(m);
         }

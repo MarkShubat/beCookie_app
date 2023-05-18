@@ -46,17 +46,26 @@ namespace beCookie_app.Controllers
         [DisableCors]
         [HttpGet]
         [Route("GetPosts")]
-        public IEnumerable<PostInfo> GetPosts(int currentUserId)
+        public IEnumerable<PostInfo> GetPosts(int currentUserId, int count, int offset)
         {
             var context = new wypxrkenContext();
             var context1 = new wypxrkenContext();
             var users = context.Users;
             var posts = context1.Posts;
             var list = new List<PostInfo>();
+            var flag = 0;
+            var flag1 = 0;
             foreach (var elem in posts)
             {
+                if (flag == count) break;
+                if (flag1 < offset)
+                {
+                    flag1++;
+                    continue;
+                }
                 var user = users.Where(user => user.Id == elem.UserId).FirstOrDefault();
-               list.Add(new PostInfo(elem, user, currentUserId));
+                list.Add(new PostInfo(elem, user, currentUserId));
+                flag++;
             }
             var result = list.OrderByDescending(n => n.likesCount);
             return result;
@@ -78,9 +87,6 @@ namespace beCookie_app.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("GetDateTime")]
-        public string GetDateTime() => DateTimeConverter.GetDateTimeString();
 
         [HttpPost]
         [Route("AddPost")]

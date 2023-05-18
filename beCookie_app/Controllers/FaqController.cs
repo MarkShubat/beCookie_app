@@ -50,6 +50,18 @@ namespace beCookie_app.Controllers
             return Ok("Совет добавлен");
         }
 
+
+        [HttpDelete]
+        [Route("DeleteById")]
+        public IActionResult DeleteById(int id)
+        {
+            var context = new wypxrkenContext();
+            var elem = context.Avatars.Where(e => e.Id == id).FirstOrDefault();
+            context.Avatars.Remove(elem);
+            context.SaveChangesAsync();
+            return Ok("записи удалены");
+        }
+
         [HttpDelete]
         [Route("DeleteAll")]
         public IActionResult Delete()

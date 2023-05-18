@@ -1,6 +1,9 @@
 using beCookie_app.DbContexts;
 using beCookie_app.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
+using System.Net;
+using System.Text;
 
 namespace beCookie_app.Controllers
 {
@@ -65,6 +68,64 @@ namespace beCookie_app.Controllers
             }
             context.SaveChangesAsync();
             return Ok("записи удалены");
+        }
+
+        [HttpPost]
+        [Route("ToDo")]
+        public IActionResult ToDo()
+        {
+            var context = new wypxrkenContext();
+            foreach(var elem in context.Users)
+            {
+                elem.Status = 0;
+                elem.Points = 0;
+            }
+            context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("AddPoints")]
+        public IActionResult AddPoints(int userId, int count)
+        {
+            var context = new wypxrkenContext();
+            var user = context.Users.Where(user => user.Id == userId).FirstOrDefault();
+            user.Points += count;
+            context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("SetStatus")]
+        public IActionResult SetStatus(int userId)
+        {
+            var context = new wypxrkenContext();
+            var user = context.Users.Where(user => user.Id == userId).FirstOrDefault();
+            user.Status = 1;
+            context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("AskForStatus")]
+        public void AskForStatus(int currentUserId, string text)
+        {
+            var context = new wypxrkenContext();
+            var user = context.Users.Where(user => user.Id == currentUserId).FirstOrDefault();
+            MailAddress from = new MailAddress("marckshubat@yandex.ru", "admin");
+            MailAddress to = new MailAddress("markshubat@gmail.com");
+            MailMessage m = new MailMessage(from, to);
+            var sb = new StringBuilder("Пользователь с идентификатором ");
+            sb.Append(currentUserId);
+            sb.Append(" запрашивает получение статуса редактора контента");
+            m.Subject = sb.ToString();
+            var s = text;
+            m.Body = s;
+            m.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient("smtp.yandex.ru", 587);
+            smtp.Credentials = new NetworkCredential("marckshubat@yandex.ru", "Mark022402");
+            smtp.EnableSsl = true;
+            smtp.Send(m);
         }
     }
 }
